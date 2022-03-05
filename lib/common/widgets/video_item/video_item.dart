@@ -1,3 +1,4 @@
+import '../../../modules/youtube_player_page/youtube_player_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,43 +31,55 @@ class _VideoItemState extends State<VideoItem> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 80,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.network(widget.video.thumbnailUrl),
-          SizedBox(
-            width: AppTheme.sizes.spacing4px,
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                Text(
-                  widget.video.title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  widget.video.description,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => YoutubePlayerPage(
+                idVideo: widget.video.videoId,
+              ),
             ),
-          ),
-          IconButton(
-            icon: widget.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
-            onPressed: () => widget.onTap(),
-            color: Colors.yellow,
-          ),
-        ],
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(widget.video.thumbnailUrl),
+            SizedBox(
+              width: AppTheme.sizes.spacing4px,
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    widget.video.title,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    widget.video.description,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              icon: widget.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
+              onPressed: () => widget.onTap(),
+              color: Colors.yellow,
+            ),
+          ],
+        ),
       ),
     );
   }
