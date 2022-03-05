@@ -4,5 +4,5 @@ abstract class AppLotties {
 
 class AppLottiesDefault implements AppLotties {
   @override
-  String get loadingSvg => "assets/lotties/loading_splash.json";
+  String get loadingSvg => "assets/lotties/loading_lottie.json";
 }

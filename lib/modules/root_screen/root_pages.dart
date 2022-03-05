@@ -1,22 +1,17 @@
-import '../home_page/home_page.dart';
-
-import '../favorite_page/favorite_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../favorite_page/favorite_page.dart';
+import '../home_page/home_page.dart';
 import 'bloc/root_screen_bloc.dart';
 
 class AppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+      body: BlocBuilder<RootScreenBloc, BottomNavigationState>(
         builder: (BuildContext context, BottomNavigationState state) {
-          if (state is PageLoadingState) {
-            return Center(child: CircularProgressIndicator());
-          }
           if (state is FirstPageLoadedState) {
-            // return FirstPage(text: state.text);
             return HomePage();
           }
           if (state is SecondPageLoadedState) {
@@ -25,10 +20,10 @@ class AppScreen extends StatelessWidget {
           return Container();
         },
       ),
-      bottomNavigationBar: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+      bottomNavigationBar: BlocBuilder<RootScreenBloc, BottomNavigationState>(
           builder: (BuildContext context, BottomNavigationState state) {
         return BottomNavigationBar(
-          currentIndex: context.select((BottomNavigationBloc bloc) => bloc.currentIndex),
+          currentIndex: context.select((RootScreenBloc bloc) => bloc.currentIndex),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.ondemand_video, color: Colors.black),
@@ -39,7 +34,7 @@ class AppScreen extends StatelessWidget {
               label: 'Favoritos',
             ),
           ],
-          onTap: (index) => context.read<BottomNavigationBloc>().add(PageTappedEvent(index: index)),
+          onTap: (index) => context.read<RootScreenBloc>().add(PageTappedEvent(index: index)),
         );
       }),
     );

@@ -1,11 +1,9 @@
-import '../../common/theme/app_theme.dart';
-
-import '../../common/models/video_model.dart';
-import '../../common/widgets/video_item/video_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
+import '../../common/theme/app_theme.dart';
+import '../../common/widgets/Loading/loading_widget.dart';
+import '../../common/widgets/video_item/video_item.dart';
 import 'bloc/home_bloc.dart';
 import 'bloc/home_event.dart';
 import 'bloc/home_state.dart';
@@ -34,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             if (state is HomeLoadingState) {
-              return CircularProgressIndicator();
+              return LoadingPageWidget();
             }
 
             if (state is HomeErrorState) {
@@ -44,7 +42,6 @@ class _HomePageState extends State<HomePage> {
             }
 
             state = state as HomeSuccessState;
-
             var videoList = state.listVideos;
 
             return ListView.separated(

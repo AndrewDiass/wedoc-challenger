@@ -7,6 +7,8 @@ abstract class BottomNavigationState extends Equatable {
   List<Object> get props => [];
 }
 
+class EmptyPageState extends BottomNavigationState {}
+
 class CurrentIndexChangedState extends BottomNavigationState {
   final int currentIndex;
 
@@ -16,19 +18,7 @@ class CurrentIndexChangedState extends BottomNavigationState {
   String toString() => 'CurrentIndexChanged to $currentIndex';
 }
 
-class PageLoadingState extends BottomNavigationState {
-  @override
-  String toString() => 'PageLoading';
-}
-
-class FirstPageLoadedState extends BottomNavigationState {
-  final String text;
-
-  FirstPageLoadedState({required this.text});
-
-  @override
-  String toString() => 'FirstPageLoaded with text: $text';
-}
+class FirstPageLoadedState extends BottomNavigationState {}
 
 class SecondPageLoadedState extends BottomNavigationState {
   final int number;

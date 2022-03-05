@@ -1,18 +1,25 @@
-import 'package:dio/dio.dart';
+import '../common/models/video_model.dart';
+
+import '../common/constants/constants.dart';
+import '../common/network_data/dio_client.dart';
 
 class HomeVideoRepository {
-  final Dio dio;
-  String? _data;
+  final DioClient dio;
   HomeVideoRepository({
     required this.dio,
   });
 
-  Future<void> fetchData() async {
-    // simulate real data fetching
-    await Future.delayed(Duration(milliseconds: 600));
-    // store dummy data
-    _data = 'First Page';
-  }
+  Future<List<VideoModel>> getVideo() async {
+    var response = await dio.get('/search', queryParameters: {
+      'key': API_KEY,
+      'part': 'snippet, id',
+      'channelId': 'UC5hvPObwya8kzWWB-wmVlXg',
+      'maxResults': 10,
+      'type': 'video',
+      'order': 'date',
+      'fields': 'items(id(videoId),snippet(title,description,thumbnails(medium)))'
+    });
 
-  String get data => _data != null ? data : '';
+    return (response["items"] as List).map((i) => VideoModel.fromJson(i)).toList();
+  }
 }
