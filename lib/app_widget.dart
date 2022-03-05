@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'common/constants/constants.dart';
 import 'common/network_data/dio_client.dart';
 import 'common/storage/favorite_storage.dart';
+import 'modules/favorite_page/bloc/favorite_bloc.dart';
 import 'modules/home_page/bloc/home_bloc.dart';
 import 'modules/root_screen/bloc/root_screen_bloc.dart';
 import 'modules/root_screen/root_pages.dart';
@@ -30,6 +31,9 @@ class AppWidget extends StatelessWidget {
           BlocProvider<HomeBloc>(
               create: (context) =>
                   HomeBloc(homeVideoRepository: HomeVideoRepository(dio: DioClient(baseUrl: BASE_URL)))),
+          BlocProvider<FavoriteBloc>(
+              create: (context) =>
+                  FavoriteBloc(favoriteVideoRepository: FavoriteVideoRepository(dio: DioClient(baseUrl: BASE_URL)))),
         ],
         child: AppScreen(),
       ),

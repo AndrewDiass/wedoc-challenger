@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FavoriteStorage extends ChangeNotifier {
   late SharedPreferences _prefs;
 
-  late List<String> favoriteIds;
+  late List<String> favoriteIds = [];
 
   FavoriteStorage() {
     _startSettings();
@@ -19,8 +19,8 @@ class FavoriteStorage extends ChangeNotifier {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  _readLocale() {
-    favoriteIds = _prefs.getStringList('favoriteVideoIds') ?? [];
+  _readLocale() async {
+    favoriteIds = await _prefs.getStringList('favoriteVideoIds') ?? [];
 
     notifyListeners();
   }

@@ -20,11 +20,4 @@ class CurrentIndexChangedState extends BottomNavigationState {
 
 class FirstPageLoadedState extends BottomNavigationState {}
 
-class SecondPageLoadedState extends BottomNavigationState {
-  final int number;
-
-  SecondPageLoadedState({required this.number});
-
-  @override
-  String toString() => 'SecondPageLoaded with number: $number';
-}
+class SecondPageLoadedState extends BottomNavigationState {}

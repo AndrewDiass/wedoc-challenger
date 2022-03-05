@@ -1,20 +1,25 @@
+import '../common/constants/constants.dart';
+import '../common/models/video_model.dart';
 import '../common/network_data/dio_client.dart';
-import 'dart:math';
 
 class FavoriteVideoRepository {
   final DioClient dio;
-  int? _data;
 
   FavoriteVideoRepository({
     required this.dio,
   });
 
-  Future<void> fetchData() async {
-    // simulate real data fetching
-    await Future.delayed(Duration(milliseconds: 600));
-    // store dummy data
-    _data = Random().nextInt(1000);
-  }
+  Future<List<VideoModel>> getVideo() async {
+    var response = await dio.get('/search', queryParameters: {
+      'key': API_KEY,
+      'part': 'snippet, id',
+      'channelId': 'UC5hvPObwya8kzWWB-wmVlXg',
+      'maxResults': 10,
+      'type': 'video',
+      'order': 'date',
+      'fields': 'items(id(videoId),snippet(title,description,thumbnails(medium)))'
+    });
 
-  int get data => _data != null ? data : 0;
+    return (response["items"] as List).map((i) => VideoModel.fromJson(i)).toList();
+  }
 }

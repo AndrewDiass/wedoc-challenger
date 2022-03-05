@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../repositories/home_video_repository.dart';
 import '../../../repositories/repositories.dart';
 
 part 'root_screen_event.dart';
@@ -31,17 +30,7 @@ class RootScreenBloc extends Bloc<BottomNavigationEvent, BottomNavigationState> 
       emit(FirstPageLoadedState());
     }
     if (this.currentIndex == 1) {
-      int data = await _getSecondPageData();
-      emit(SecondPageLoadedState(number: data));
+      emit(SecondPageLoadedState());
     }
-  }
-
-  Future<int> _getSecondPageData() async {
-    int data = favoriteVideoRepository.data;
-    if (data == null) {
-      await favoriteVideoRepository.fetchData();
-      data = favoriteVideoRepository.data;
-    }
-    return data;
   }
 }

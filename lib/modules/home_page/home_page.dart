@@ -35,6 +35,33 @@ class _HomePageState extends State<HomePage> {
     context.read<FavoriteStorage>().removeFavoriteLocale(videoId);
   }
 
+  wantToRemoveFavoriteDialog(BuildContext context, String videoId) {
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        removeFavoriteLocale(videoId);
+        Navigator.of(context).pop();
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text("Deseja realmente remover o video favorito?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -73,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                     // isFavorite: false,
                     isFavorite: (favoriteIds.where((id) => id == videoList[index].videoId).toList().length == 1),
                     onTap: () => (favoriteIds.where((id) => id == videoList[index].videoId).toList().length == 1)
-                        ? removeFavoriteLocale(videoList[index].videoId)
+                        ? wantToRemoveFavoriteDialog(context, videoList[index].videoId)
                         : setFavoriteLocale(videoList[index].videoId),
                   );
                 });

@@ -15,7 +15,7 @@ class AppScreen extends StatelessWidget {
             return HomePage();
           }
           if (state is SecondPageLoadedState) {
-            return FavoritePage(number: state.number);
+            return FavoritePage();
           }
           return Container();
         },

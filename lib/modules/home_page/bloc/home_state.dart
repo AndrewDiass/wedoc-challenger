@@ -15,5 +15,3 @@ class HomeErrorState implements HomeState {
 
   const HomeErrorState(this.messageError);
 }
-
-class FavoritedVideoState implements HomeState {}
