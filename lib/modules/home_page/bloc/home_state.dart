@@ -2,16 +2,18 @@ import '../../../common/models/video_model.dart';
 
 abstract class HomeState {}
 
-class HomeSuccess implements HomeState {
+class HomeSuccessState implements HomeState {
   final List<VideoModel> listVideos;
 
-  const HomeSuccess(this.listVideos);
+  const HomeSuccessState(this.listVideos);
 }
 
-class HomeLoading implements HomeState {}
+class HomeLoadingState implements HomeState {}
 
-class HomeError implements HomeState {
+class HomeErrorState implements HomeState {
   final String messageError;
 
-  const HomeError(this.messageError);
+  const HomeErrorState(this.messageError);
 }
+
+class FavoritedVideoState implements HomeState {}

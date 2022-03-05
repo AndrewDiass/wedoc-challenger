@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../common/models/video_model.dart';
 import 'package:dio/dio.dart';
 
@@ -11,13 +13,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'home_event.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeSuccess([])) {
+  HomeBloc() : super(HomeSuccessState([])) {
     on<HomeGetVideosEvent>(_getVideos);
+    on<FavoritedVideoEvent>(_favoritedVideo);
   }
 
+  @override
+  List<VideoModel> get initialState => [];
+
   void _getVideos(HomeGetVideosEvent event, Emitter<HomeState> emit) async {
-    // yield homeLoading();
-    emit(HomeLoading());
+    emit(HomeLoadingState());
     try {
       var response = await Dio().get('https://www.googleapis.com/youtube/v3/search', queryParameters: {
         'key': API_KEY,
@@ -29,16 +34,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         'fields': 'items(id(videoId),snippet(title,description,thumbnails(medium)))'
       });
 
-      print("Meus videos => $response");
-
-      var eaee = (response.data['items'] as List).map((i) => VideoModel.fromJson(i)).toList();
-
-      print("Meus videos => $eaee");
-
-      emit(HomeSuccess(eaee));
+      emit(HomeSuccessState((response.data['items'] as List).map((i) => VideoModel.fromJson(i)).toList()));
     } catch (e) {
       print(e);
-      emit(HomeError("Não foi possivel carregar os videos"));
+      emit(HomeErrorState("Não foi possivel carregar os videos"));
     }
+  }
+
+  void _favoritedVideo(FavoritedVideoEvent event, Emitter<HomeState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final List<String>? videoIds = prefs.getStringList('favoriteVideoIds');
+
+    if (videoIds == null) {
+      await prefs.setStringList('favoriteVideoIds', <String>[event.videoId]);
+      print("eaee1");
+    } else {
+      videoIds.add(event.videoId);
+      await prefs.setStringList('favoriteVideoIds', videoIds);
+      print("eaee2");
+    }
+
+    print(videoIds);
   }
 }

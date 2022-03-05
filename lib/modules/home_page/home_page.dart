@@ -1,3 +1,5 @@
+import '../../common/theme/app_theme.dart';
+
 import '../../common/models/video_model.dart';
 import '../../common/widgets/video_item/video_item.dart';
 import 'package:flutter/material.dart';
@@ -26,37 +28,38 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Home')),
-        body: BlocBuilder<HomeBloc, HomeState>(
+      backgroundColor: AppTheme.colors.background,
+      body: Padding(
+        padding: EdgeInsets.all(AppTheme.sizes.spacing16px),
+        child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            if (state is HomeLoading) {
+            if (state is HomeLoadingState) {
               return CircularProgressIndicator();
             }
 
-            if (state is HomeError) {
+            if (state is HomeErrorState) {
               return Center(
                 child: Text(state.messageError),
               );
             }
 
-            state = state as HomeSuccess;
+            state = state as HomeSuccessState;
 
-            if (state.listVideos.isEmpty) {
-              return Container();
-            }
-            print("state.listVideos");
+            var videoList = state.listVideos;
 
-            var videoList = state.listVideos as List<VideoModel>;
-
-            return ListView.builder(
-                padding: const EdgeInsets.all(8),
+            return ListView.separated(
+                separatorBuilder: (context, index) => Divider(),
                 itemCount: state.listVideos.length,
                 itemBuilder: (BuildContext context, int index) {
                   return VideoItem(
                     video: videoList[index],
+                    onFavorite: () =>
+                        context.read<HomeBloc>().add(FavoritedVideoEvent(videoId: videoList[index].videoId)),
                   );
                 });
           },
-        ));
+        ),
+      ),
+    );
   }
 }

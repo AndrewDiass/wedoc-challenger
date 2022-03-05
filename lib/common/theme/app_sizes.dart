@@ -7,14 +7,14 @@ abstract class AppSizes {
 
 class AppSizesDefault implements AppSizes {
   @override
-  double get spacing16px => 4;
+  double get spacing4px => 4;
 
   @override
-  double get spacing32px => 8;
+  double get spacing8px => 8;
 
   @override
-  double get spacing4px => 16;
+  double get spacing16px => 16;
 
   @override
-  double get spacing8px => 32;
+  double get spacing32px => 32;
 }
