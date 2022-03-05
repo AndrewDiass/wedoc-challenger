@@ -1,8 +1,8 @@
-import 'package:dio/dio.dart';
+import '../common/network_data/dio_client.dart';
 import 'dart:math';
 
 class FavoriteVideoRepository {
-  final Dio dio;
+  final DioClient dio;
   int? _data;
 
   FavoriteVideoRepository({

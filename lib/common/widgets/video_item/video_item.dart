@@ -1,18 +1,19 @@
-import '../../theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/video_model.dart';
+import '../../theme/app_theme.dart';
 
 class VideoItem extends StatefulWidget {
   VideoModel video;
-  VoidCallback onFavorite;
-  bool isFavorite = false;
+  bool isFavorite;
+  VoidCallback onTap;
 
   VideoItem({
     Key? key,
     required this.video,
-    required this.onFavorite,
+    required this.isFavorite,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -23,16 +24,6 @@ class _VideoItemState extends State<VideoItem> {
   @override
   void initState() {
     super.initState();
-    verifyIsFavoritedVideo();
-  }
-
-  verifyIsFavoritedVideo() async {
-    final prefs = await SharedPreferences.getInstance();
-    final List<String>? videoIds = prefs.getStringList('favoriteVideoIds');
-
-    if (videoIds != null) {
-      widget.isFavorite = videoIds.where((id) => id == widget.video.videoId).toList().length == 1;
-    }
   }
 
   @override
@@ -72,7 +63,7 @@ class _VideoItemState extends State<VideoItem> {
           ),
           IconButton(
             icon: widget.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
-            onPressed: () {},
+            onPressed: () => widget.onTap(),
             color: Colors.yellow,
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'common/constants/constants.dart';
 import 'common/network_data/dio_client.dart';
+import 'common/storage/favorite_storage.dart';
 import 'modules/home_page/bloc/home_bloc.dart';
 import 'modules/root_screen/bloc/root_screen_bloc.dart';
 import 'modules/root_screen/root_pages.dart';
@@ -18,10 +19,12 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       home: MultiProvider(
         providers: [
-          // Provider(create: (_) => Dio()),
+          ChangeNotifierProvider(
+            create: (context) => FavoriteStorage(),
+          ),
           BlocProvider<RootScreenBloc>(
             create: (context) => RootScreenBloc(
-              favoriteVideoRepository: FavoriteVideoRepository(dio: DioClient()),
+              favoriteVideoRepository: FavoriteVideoRepository(dio: DioClient(baseUrl: BASE_URL)),
             )..add(AppStartedEvent()),
           ),
           BlocProvider<HomeBloc>(

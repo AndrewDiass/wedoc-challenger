@@ -1,3 +1,4 @@
+import '../../common/storage/favorite_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,17 +17,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late List<String> favoriteIds;
+
+  getFavoriteVideos() {
+    favoriteIds = context.watch<FavoriteStorage>().favoriteIds;
+
+    print(favoriteIds);
+
+    setState(() {});
+  }
+
+  setFavoriteLocale(String videoId) {
+    context.read<FavoriteStorage>().setFavoriteLocale(videoId);
+  }
+
+  removeFavoriteLocale(String videoId) {
+    context.read<FavoriteStorage>().removeFavoriteLocale(videoId);
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeGetVideosEvent());
   }
 
   @override
   Widget build(BuildContext context) {
+    getFavoriteVideos();
+
     return Scaffold(
-      backgroundColor: AppTheme.colors.background,
+      backgroundColor: Colors.black45,
       body: Padding(
         padding: EdgeInsets.all(AppTheme.sizes.spacing16px),
         child: BlocBuilder<HomeBloc, HomeState>(
@@ -50,8 +70,11 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (BuildContext context, int index) {
                   return VideoItem(
                     video: videoList[index],
-                    onFavorite: () =>
-                        context.read<HomeBloc>().add(FavoritedVideoEvent(videoId: videoList[index].videoId)),
+                    // isFavorite: false,
+                    isFavorite: (favoriteIds.where((id) => id == videoList[index].videoId).toList().length == 1),
+                    onTap: () => (favoriteIds.where((id) => id == videoList[index].videoId).toList().length == 1)
+                        ? removeFavoriteLocale(videoList[index].videoId)
+                        : setFavoriteLocale(videoList[index].videoId),
                   );
                 });
           },
