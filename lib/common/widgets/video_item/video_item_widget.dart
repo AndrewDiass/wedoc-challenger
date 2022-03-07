@@ -1,16 +1,15 @@
 import '../../../modules/youtube_player_page/youtube_player_page.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/video_model.dart';
 import '../../theme/app_theme.dart';
 
-class VideoItem extends StatefulWidget {
+class VideoItemWidget extends StatefulWidget {
   VideoModel video;
   bool isFavorite;
   VoidCallback onTap;
 
-  VideoItem({
+  VideoItemWidget({
     Key? key,
     required this.video,
     required this.isFavorite,
@@ -18,10 +17,10 @@ class VideoItem extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<VideoItem> createState() => _VideoItemState();
+  State<VideoItemWidget> createState() => _VideoItemState();
 }
 
-class _VideoItemState extends State<VideoItem> {
+class _VideoItemState extends State<VideoItemWidget> {
   @override
   void initState() {
     super.initState();
@@ -76,7 +75,7 @@ class _VideoItemState extends State<VideoItem> {
             IconButton(
               icon: widget.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
               onPressed: () => widget.onTap(),
-              color: Colors.yellow,
+              color: Colors.yellow.shade700,
             ),
           ],
         ),

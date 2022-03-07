@@ -13,7 +13,7 @@ class FavoriteVideoRepository {
     var response = await dio.get('/search', queryParameters: {
       'key': API_KEY,
       'part': 'snippet, id',
-      'channelId': 'UC5hvPObwya8kzWWB-wmVlXg',
+      'channelId': CHANNEL_ID,
       'maxResults': 10,
       'type': 'video',
       'order': 'date',
